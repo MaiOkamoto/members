@@ -29,13 +29,35 @@ class PostController extends Controller
 
   /**
    * Store a newly created resource in storage.
-   *
+   * データを保存
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
   public function store(Request $request)
   {
-    //
+    //バリデーション
+    $inputs = $request->validate([
+      'title' => 'required|max:255',
+      'body' => 'required|max:255',
+      'image' => 'image|max:1024'
+    ]);
+
+    $post = new Post();
+
+    $post->title = $request->title;
+    $post->body = $request->body;
+    $post->user_id = auth()->user()->id;
+    //画像ファイルの保存
+    if (request('image')) {
+      $original = request()->file('image')->getClientOriginalName();
+      //日時追加
+      $name = date('Ymd_His') . '_' . $original;
+      request()->file('image')->move('storage/images', $name);
+      $post->image = $name;
+    }
+
+    $post->save();
+    return back()->with('message', '投稿を作成しました');
   }
 
   /**

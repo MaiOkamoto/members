@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
   use HasFactory;
+
+  //保存の許可
+  protected $fillable = [
+    'title',
+    'body',
+    'user_id',
+    'image'
+  ];
+
   public function user()
   {
     return $this->belongsTo('App\Models\User');
