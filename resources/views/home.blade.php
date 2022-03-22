@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('content')
+
+@if(session('message'))
+  <div class="alert alert-success">{{session('message')}}</div>
+@endif
+
+<div class="ml-2 mb-3">
+  home
+</div>
+
 {{$user->name}}さん、こんにちは！
 @foreach ($posts as $post)
 <div class="container-fuid mt-20" style="margin-left:-10px;">
@@ -9,7 +18,8 @@
 
                 <div class="card-header">
                   <div class="media flex-warp w-100 align-items-center">
-                    <div class="media-body ml-3">{{$post->title}}
+                    <div class="media-body ml-3">
+                      <a href="{{route('post.show',$post)}}">{{$post->title}}</a>
                       <div class="text-muted small">{{$post->user->name}}</div>
                     </div>
                     <div class="text-muted small ml-3">
